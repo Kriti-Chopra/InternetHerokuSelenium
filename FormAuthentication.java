@@ -23,6 +23,9 @@ public class FormAuthentication {
 		
 		WebElement errorMsgElement = driver.findElement(By.id("flash"));
 		System.out.println(errorMsgElement.getText());
+
+		// verify wrong validation 
+		// Verify validation msgs
 		
 		driver.quit();
 	}
