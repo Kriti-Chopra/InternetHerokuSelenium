@@ -2,6 +2,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
 
 public class FormAuthentication {
 
@@ -12,22 +13,31 @@ public class FormAuthentication {
 		driver.manage().window().maximize();
 		
 		driver.get("https://the-internet.herokuapp.com/login");
-		
-		WebElement username = driver.findElement(By.id("username"));
-		WebElement password = driver.findElement(By.id("password"));
-		WebElement submitBtn = driver.findElement(By.cssSelector("button[type='submit']"));
-		
-		username.sendKeys("username");
-		password.sendKeys("password");
-		submitBtn.click();
-		
-		WebElement errorMsgElement = driver.findElement(By.id("flash"));
-		System.out.println(errorMsgElement.getText());
 
-		// verify wrong validation 
-		// Verify validation msgs
-		
 		driver.quit();
 	}
+	
+	public void EnterUsername(WebDriver driver) {
+		WebElement username = driver.findElement(By.id("username"));
+		username.sendKeys("username");
+	}
+	
+	public void EnterPassword(WebDriver driver) {
+		WebElement password = driver.findElement(By.id("password"));
+		password.sendKeys("password");
+	}
+	
+	public void SubmitForm(WebDriver driver) {
+		WebElement submitBtn = driver.findElement(By.cssSelector("button[type='submit']"));
+		submitBtn.click();
+	}
+	
+	public String GetErrorMsg(WebDriver driver) {
+		WebElement errorMsgElement = driver.findElement(By.id("flash"));
+		return errorMsgElement.getText();
+		
+	}
+	
+	
 
 }
