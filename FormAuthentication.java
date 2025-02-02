@@ -1,11 +1,11 @@
 import java.security.PublicKey;
-
 import org.checkerframework.checker.units.qual.g;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
@@ -38,7 +38,7 @@ public class FormAuthentication {
 	
 	public String GetErrorMsg() {
 		WebElement errorMsgElement = driver.findElement(By.id("flash"));
-		return errorMsgElement.getText().trim();
+		return errorMsgElement.getText().trim().split("!")[0]+"!";
 	}
 	
 	public void Logout() {
@@ -46,26 +46,26 @@ public class FormAuthentication {
 		logoutBtn.click();
 	}
 	
-	@BeforeTest
+	@BeforeClass
 	public void Initialize() {
 		driver.manage().window().maximize();
 		driver.get("https://the-internet.herokuapp.com/login");
 	}
 	
-	@AfterTest
+	@AfterClass
 	public void CloseDriver() {
 		driver.quit();
 	}
 	
 	// submit without the credentials
-	@Test
+	@Test(priority = 1)
 	public void VerifySubmitWithoutCredentials() {
 		SubmitForm();
 		Assert.assertEquals(usernameInvalidMsg,GetErrorMsg());
 	}
 	
 	//submit with wrong username
-	@Test
+	@Test(priority = 2)
 	public void VerifySubmitInvalidUsername() {
 		EnterUsername("Admin");
 		SubmitForm();
@@ -73,7 +73,7 @@ public class FormAuthentication {
 	}
 	
 	//submit with wrong password
-	@Test
+	@Test(priority = 3)
 	public void VerifySubmitInvalidPassword() {
 		EnterUsername(validUsername);
 		EnterPassword("Admin");
@@ -82,7 +82,7 @@ public class FormAuthentication {
 	}
 	
 	//submit with correct credentials
-	@Test
+	@Test(priority = 4)
 	public void VerifySubmitValidCredentials() {
 		EnterUsername(validUsername);
 		EnterPassword(validPassword);
@@ -91,7 +91,7 @@ public class FormAuthentication {
 	}
 	
 	//Logout
-	@Test
+	@Test(priority = 5)
 	public void VerifyLogout() {
 		Logout();
 		Assert.assertEquals(loggedOutMsg,GetErrorMsg());
