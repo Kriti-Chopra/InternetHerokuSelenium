@@ -25,15 +25,35 @@ public class DynamicContent {
 			dynamicList.add(i,contentList.get(i).getText());
 		}
 		
+		//validate after refreshing
 		driver.navigate().refresh();
 		contentList = driver.findElements(By.xpath("//div[@class='row']/div[@class='large-10 columns']"));
 		for(int i=0;i<contentList.size();++i) {
-			System.out.println("here");
 			Assert.assertTrue(dynamicList.get(i)!=contentList.get(i).getText());
 		}
 		
+		//Append code to url
+		String codeToAppend = driver.findElement(By.tagName("code")).getText(); 
+		String newUrlString = driver.getCurrentUrl()+codeToAppend;
+		driver.get(newUrlString);
 		
+		//get static load data
+		List<String> staticList = new ArrayList<String>();
+		contentList = driver.findElements(By.xpath("//div[@class='row']/div[@class='large-10 columns']"));
+		for(int i=0;i<contentList.size();++i) {
+			staticList.add(i,contentList.get(i).getText());
+		}
 		
+		//validate after refreshing
+		driver.navigate().refresh();
+		contentList = driver.findElements(By.xpath("//div[@class='row']/div[@class='large-10 columns']"));
+		int i=0;
+		while(i<contentList.size()-1) {
+			Assert.assertEquals(staticList.get(i),contentList.get(i).getText());
+			++i;
+		}
+		Assert.assertTrue(staticList.get(i)!=contentList.get(i).getText());
+	
 		
 		driver.quit();
 		
